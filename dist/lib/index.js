@@ -101,7 +101,7 @@ exports.printers = printers;
  * @returns A process status.
  */
 // export const print = async (data: PrintData, options: PrintOptions) => {
-const print = (data, options, callback) => {
+const print = async (data, options) => {
     const html = document.createElement('html');
     const container = document.createElement("div");
     container.id = "wrapper";
@@ -367,12 +367,11 @@ const print = (data, options, callback) => {
         printer_setting: printerSettingStr,
         remove_after_print: typeof options.remove_temp != "undefined" ? options.remove_temp : false
     };
-    (0, tauri_1.invoke)('plugin:printer|print_pdf', optionsParams).then(() => {
-        callback({
-            success: true,
-            message: "OK"
-        });
-    });
+    await (0, tauri_1.invoke)('plugin:printer|print_pdf', optionsParams);
+    return {
+        success: true,
+        message: "OK"
+    };
 };
 exports.print = print;
 /**
@@ -383,7 +382,7 @@ exports.print = print;
 const print_file = (options, callback) => {
     if (typeof options.id == "undefined" && typeof options.name == "undefined")
         throw new Error('print_file require id | name as string');
-    if (typeof options.path == "undefined" && typeof options.file == "undefined")
+    if (typeof options.path == "undefined"/*&& typeof options.file == "undefined"*/)
         throw new Error('print_file require parameter path as string | file as Buffer');
     let id = "";
     if (typeof options.id != "undefined") {
@@ -434,7 +433,7 @@ const print_file = (options, callback) => {
     }
     const paperType = typeof printerSettings.paper != "undefined" ? typeof printerSettings.paper : 'paperkind=' + printerSettings.paperkind;
     const printerSettingStr = `-print-settings ${rangeStr},${paperType},${printerSettings.method},${printerSettings.scale},${printerSettings.orientation},${printerSettings.repeat}x`;
-    let tempPath = "";
+    /*let tempPath = "";
     if (typeof options.file != "undefined") {
         const fileSignature = options.file.subarray(0, 4).toString('hex');
         if (fileSignature != "25504446")
@@ -448,16 +447,16 @@ const print_file = (options, callback) => {
         });
         if (tempPath.length == 0)
             throw new Error("Fail to create temp file");
-    }
+    }*/
     const optionsParams = {
         id: `"${id}"`,
         path: options.path,
         printer_setting: printerSettingStr,
         remove_after_print: typeof options.remove_temp != "undefined" ? options.remove_temp : false
     };
-    if (typeof options.file != "undefined") {
+    /*if (typeof options.file != "undefined") {
         optionsParams.path = tempPath;
-    }
+    }*/
     (0, tauri_1.invoke)('plugin:printer|print_pdf', optionsParams).then(() => {
         callback({
             success: true,
