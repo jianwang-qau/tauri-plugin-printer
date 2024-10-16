@@ -1,11 +1,17 @@
 import { Jobs, PrintFileOptions, PrintOptions, Printer, ResponseResult } from './types';
 import { PrintData } from './types';
 /**
+ * Get default printer.
+ *
+ * @returns A json of default printer.
+ */
+export declare const default_printer: () => Promise<ResponseResult>;
+/**
  * Get list printers.
  *
  * @returns A array of printer detail.
  */
-export declare const printers: (id?: string | null) => Promise<Printer[]>;
+export declare const printers: (id?: string | null) => Promise<ResponseResult>;
 /**
  * Print.
  * @params first_param:dataprint, second_param: Print Options

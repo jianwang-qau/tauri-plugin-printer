@@ -46,12 +46,16 @@ const decodeBase64 = (str) => {
  *
  * @returns A json of default printer.
  */
-export const default_printer = (callback) => {
+const default_printer = (callback) => {
     (0, tauri_1.invoke)('plugin:printer|get_default_printer').then((result) => {
         const item = parseIfJSON(result, null);
         if (item == null) callback({});
         else callback(item);
     });
+    return {
+        success: true,
+        message: "OK"
+    };
 }
 
 /**
@@ -84,7 +88,10 @@ const printers = (id = null, callback) => {
                     priority: item.Priority
                 }]);
         });
-        return;
+        return {
+            success: true,
+            message: "OK"
+        };
     }
 
     (0, tauri_1.invoke)('plugin:printer|get_printers').then(() => {
@@ -110,6 +117,10 @@ const printers = (id = null, callback) => {
         }
         callback(printers);
     });
+    return {
+        success: true,
+        message: "OK"
+    };
 };
 exports.printers = printers;
 /**
