@@ -49,8 +49,8 @@ const decodeBase64 = (str) => {
 export const default_printer = (callback) => {
     (0, tauri_1.invoke)('plugin:printer|get_default_printer').then((result) => {
         const item = parseIfJSON(result, null);
-        if (item == null) item = {};
-        callback(item);
+        if (item == null) callback({});
+        else callback(item);
     });
 }
 
@@ -67,9 +67,9 @@ const printers = (id = null, callback) => {
         }).then((result) => {
             const item = parseIfJSON(result, null);
             if (item == null)
-                item = [];
+                callback([]);
             else
-                item = [{
+                callback([{
                     id,
                     name: item.Name,
                     driver_name: item.DriverName,
@@ -82,8 +82,7 @@ const printers = (id = null, callback) => {
                     shared: item.Shared,
                     type: item.Type,
                     priority: item.Priority
-                }]
-            callback(item);
+                }]);
         });
         return;
     }
