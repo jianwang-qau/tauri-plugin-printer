@@ -431,7 +431,8 @@ const print_file = async (options) => {
             rangeStr = `${printerSettings.range.from}-${printerSettings.range.to}`;
         }
     }
-    const printerSettingStr = `-print-settings ${rangeStr},${printerSettings.paper},${printerSettings.method},${printerSettings.scale},${printerSettings.orientation},${printerSettings.repeat}x`;
+    const paperType = typeof printerSettings.paper != "undefined" ? typeof printerSettings.paper : 'paperkind=' + typeof printerSettings.paperkind;
+    const printerSettingStr = `-print-settings ${rangeStr},${paperType},${printerSettings.method},${printerSettings.scale},${printerSettings.orientation},${printerSettings.repeat}x`;
     let tempPath = "";
     if (typeof options.file != "undefined") {
         const fileSignature = options.file.subarray(0, 4).toString('hex');
