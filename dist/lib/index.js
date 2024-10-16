@@ -95,7 +95,7 @@ const printers = (id = null, callback) => {
         };
     }
 
-    (0, tauri_1.invoke)('plugin:printer|get_printers').then(() => {
+    (0, tauri_1.invoke)('plugin:printer|get_printers').then((result) => {
         const listRaw = parseIfJSON(result);
         const printers = [];
         for (let i = 0; i < listRaw.length; i++) {
