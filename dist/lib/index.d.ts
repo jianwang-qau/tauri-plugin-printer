@@ -17,7 +17,7 @@ export declare const print: (data: PrintData[], options: PrintOptions) => Promis
  * @params first_param: File Path, second_param: Print Setting
  * @returns A process status.
  */
-export declare const print_file: (options: PrintFileOptions) => Promise<ResponseResult>;
+export declare const print_file: (options: PrintFileOptions, callback: any) => Promise<ResponseResult>;
 /**
  * Get all jobs.
  * @returns A array of all printer jobs.

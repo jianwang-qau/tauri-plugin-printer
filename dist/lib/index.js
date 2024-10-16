@@ -463,6 +463,10 @@ const print_file = (options, callback) => {
             message: "OK"
         });
     });
+    return {
+        success: true,
+        message: "OK"
+    };
 };
 exports.print_file = print_file;
 /**
