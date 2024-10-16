@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.remove_job = exports.pause_job = exports.resume_job = exports.restart_job = exports.job = exports.jobs = exports.print_file = exports.print = exports.printers = void 0;
+exports.remove_job = exports.pause_job = exports.resume_job = exports.restart_job = exports.job = exports.jobs = exports.print_file = exports.print = exports.printers = exports.default_printer = void 0;
 const tauri_1 = require("@tauri-apps/api/tauri");
 const constants_1 = require("./constants");
 const buffer_1 = require("buffer");
@@ -57,6 +57,7 @@ const default_printer = (callback) => {
         message: "OK"
     };
 }
+exports.default_printer = default_printer;
 
 /**
  * Get list printers.
