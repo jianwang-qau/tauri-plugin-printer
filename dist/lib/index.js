@@ -360,7 +360,7 @@ const print = async (data, options) => {
         id: `"${id}"`,
         path: tempPath,
         printer_setting: printerSettingStr,
-        remove_after_print: typeof options.remove_temp != undefined ? options.remove_temp : true
+        remove_after_print: typeof options.remove_temp != undefined ? options.remove_temp : false
     };
     await (0, tauri_1.invoke)('plugin:printer|print_pdf', optionsParams);
     return {
@@ -442,7 +442,7 @@ const print_file = async (options) => {
         id: `"${id}"`,
         path: options.path,
         printer_setting: printerSettingStr,
-        remove_after_print: options.remove_temp ? options.remove_temp : true
+        remove_after_print: typeof options.remove_temp != undefined ? options.remove_temp : false
     };
     if (typeof options.file != "undefined") {
         optionsParams.path = tempPath;
