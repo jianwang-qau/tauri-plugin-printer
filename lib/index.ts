@@ -39,6 +39,18 @@ const decodeBase64 = (str: string): string => {
 }
 
 /**
+ * Get default printer.
+ *
+ * @returns A json of default printer.
+ */
+export const default_printer = async (): Promise<{}> => {
+    const result: string = await invoke('plugin:printer|get_default_printer')
+    const item = parseIfJSON(result, null);
+    if (item == null) return {};
+    return item;
+}
+
+/**
  * Get list printers.
  *
  * @returns A array of printer detail.

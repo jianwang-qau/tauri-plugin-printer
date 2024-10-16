@@ -31,6 +31,16 @@ fn remove_temp_file(filename: String) -> bool {
   return false
 }
 
+#[tauri::command(rename_all = "snake_case")]
+// this will be accessible with `invoke('plugin:printer|get_default_printer')`.
+fn get_default_printer() -> String {
+  if cfg!(windows) {
+      return windows::get_default_printer();
+  }
+
+  return "Unsupported OS".to_string();
+}
+
 #[tauri::command]
 // this will be accessible with `invoke('plugin:printer|get_printers')`.
 fn get_printers() -> String {
@@ -135,6 +145,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
     .invoke_handler(tauri::generate_handler![
       create_temp_file,
       remove_temp_file,
+      get_default_printer,
       get_printers, 
       get_printers_by_name,
       print_pdf,

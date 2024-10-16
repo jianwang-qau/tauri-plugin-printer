@@ -32,6 +32,14 @@ pub fn init_windows() {
 }
 
 /**
+ * Get default printer on windows using powershell
+ */
+pub fn get_default_printer() -> String {
+    let output = Command::new("powershell").args([format!("Get-WmiObject -Query 'SELECT * FROM Win32_Printer WHERE Default=true' | Select Name, Default, PortName | ConvertTo-Json")]).output().unwrap();
+    return output.stdout.to_string();
+}
+
+/**
  * Get printers on windows using powershell
  */
 pub fn get_printers() -> String {
@@ -49,7 +57,6 @@ pub fn get_printers() -> String {
 
     // Receive the result from the spawned thread
     let result: String = receiver.recv().unwrap();
-
 
     return result
 }
