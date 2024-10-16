@@ -478,7 +478,7 @@ const print_file = (options, callback) => {
             throw new Error("Fail to create temp file");
     }*/
     const optionsParams = {
-        id: `"${id}"`,
+        id: `${id}`,
         path: options.path,
         printer_setting: printerSettingStr,
         remove_after_print: typeof options.remove_temp != "undefined" ? options.remove_temp : false
