@@ -308,10 +308,10 @@ const print = async (data, options) => {
     const buffer = pdf.output('arraybuffer');
     wrapper.remove();
     let id = "";
-    if (typeof options.id != 'undefined') {
+    if (typeof options.id != "undefined") {
         id = decodeBase64(options.id);
     }
-    if (typeof options.name != 'undefined') {
+    if (typeof options.name != "undefined") {
         id = options.name;
     }
     // 
@@ -325,6 +325,10 @@ const print = async (data, options) => {
     };
     if (typeof options?.print_setting?.paper != "undefined")
         printerSettings.paper = options.print_setting.paper;
+    if (typeof options?.print_setting?.paperkind != "undefined") {
+        delete printerSettings.paper;
+        printerSettings.paperkind = options.print_setting.paperkind;
+    }
     if (typeof options?.print_setting?.method != "undefined")
         printerSettings.method = options.print_setting.method;
     if (typeof options?.print_setting?.scale != "undefined")
@@ -360,7 +364,7 @@ const print = async (data, options) => {
         id: `"${id}"`,
         path: tempPath,
         printer_setting: printerSettingStr,
-        remove_after_print: typeof options.remove_temp != undefined ? options.remove_temp : false
+        remove_after_print: typeof options.remove_temp != "undefined" ? options.remove_temp : false
     };
     await (0, tauri_1.invoke)('plugin:printer|print_pdf', optionsParams);
     return {
@@ -375,12 +379,12 @@ exports.print = print;
  * @returns A process status.
  */
 const print_file = async (options) => {
-    if (options.id == undefined && options.name == undefined)
+    if (typeof options.id == "undefined" && typeof options.name == "undefined")
         throw new Error('print_file require id | name as string');
-    if (options.path == undefined && options.file == undefined)
+    if (typeof options.path == "undefined" && typeof options.file == "undefined")
         throw new Error('print_file require parameter path as string | file as Buffer');
     let id = "";
-    if (typeof options.id != 'undefined') {
+    if (typeof options.id != "undefined") {
         id = decodeBase64(options.id);
     }
     else {
@@ -395,6 +399,10 @@ const print_file = async (options) => {
     };
     if (typeof options?.print_setting?.paper != "undefined")
         printerSettings.paper = options.print_setting.paper;
+    if (typeof options?.print_setting?.paperkind != "undefined") {
+        delete printerSettings.paper;
+        printerSettings.paperkind = options.print_setting.paperkind;
+    }
     if (typeof options?.print_setting?.method != "undefined")
         printerSettings.method = options.print_setting.method;
     if (typeof options?.print_setting?.scale != "undefined")
@@ -442,7 +450,7 @@ const print_file = async (options) => {
         id: `"${id}"`,
         path: options.path,
         printer_setting: printerSettingStr,
-        remove_after_print: typeof options.remove_temp != undefined ? options.remove_temp : false
+        remove_after_print: typeof options.remove_temp != "undefined" ? options.remove_temp : false
     };
     if (typeof options.file != "undefined") {
         optionsParams.path = tempPath;
@@ -466,14 +474,14 @@ const jobs = async (printerid = null) => {
             return [];
         const result = await (0, tauri_1.invoke)('plugin:printer|get_jobs', { printername: printer[0].name });
         let listRawJobs = parseIfJSON(result, []);
-        if (listRawJobs.length == undefined)
+        if (typeof listRawJobs.length == "undefined")
             listRawJobs = [listRawJobs];
         for (const job of listRawJobs) {
             const id = encodeBase64(`${printer[0].name}_@_${job.Id}`);
             allJobs.push({
                 id,
                 job_id: job.Id,
-                job_status: constants_1.jobStatus[job.JobStatus] != undefined ? {
+                job_status: typeof constants_1.jobStatus[job.JobStatus] != "undefined" ? {
                     code: job.JobStatus,
                     description: constants_1.jobStatus[job.JobStatus].description,
                     name: constants_1.jobStatus[job.JobStatus].name
@@ -502,14 +510,14 @@ const jobs = async (printerid = null) => {
     for (const printer of listPrinter) {
         const result = await (0, tauri_1.invoke)('plugin:printer|get_jobs', { printername: printer.name });
         let listRawJobs = parseIfJSON(result, []);
-        if (listRawJobs.length == undefined)
+        if (typeof listRawJobs.length == "undefined")
             listRawJobs = [listRawJobs];
         for (const job of listRawJobs) {
             const id = encodeBase64(`${printer.name}_@_${job.Id}`);
             allJobs.push({
                 id,
                 job_id: job.Id,
-                job_status: constants_1.jobStatus[job.JobStatus] != undefined ? {
+                job_status: typeof constants_1.jobStatus[job.JobStatus] != "undefined" ? {
                     code: job.JobStatus,
                     description: constants_1.jobStatus[job.JobStatus].description,
                     name: constants_1.jobStatus[job.JobStatus].name
@@ -550,7 +558,7 @@ const job = async (jobid) => {
     return {
         id: jobid,
         job_id: job.Id,
-        job_status: constants_1.jobStatus[job.JobStatus] != undefined ? {
+        job_status: typeof constants_1.jobStatus[job.JobStatus] != "undefined" ? {
             code: job.JobStatus,
             description: constants_1.jobStatus[job.JobStatus].description,
             name: constants_1.jobStatus[job.JobStatus].name
