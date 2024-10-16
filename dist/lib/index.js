@@ -352,7 +352,8 @@ const print = async (data, options) => {
             rangeStr = `${printerSettings.range.from}-${printerSettings.range.to}`;
         }
     }
-    const printerSettingStr = `-print-settings ${rangeStr},${printerSettings.paper},${printerSettings.method},${printerSettings.scale},${printerSettings.orientation},${printerSettings.color_type},${printerSettings.repeat}x`;
+    const paperType = typeof printerSettings.paper != "undefined" ? typeof printerSettings.paper : 'paperkind=' + typeof printerSettings.paperkind;
+    const printerSettingStr = `-print-settings ${rangeStr},${paperType},${printerSettings.method},${printerSettings.scale},${printerSettings.orientation},${printerSettings.color_type},${printerSettings.repeat}x`;
     const filename = `${Math.floor(Math.random() * 100000000)}_${Date.now()}.pdf`;
     const tempPath = await (0, tauri_1.invoke)('plugin:printer|create_temp_file', {
         buffer_data: buffer_1.Buffer.from(buffer).toString('base64'),
