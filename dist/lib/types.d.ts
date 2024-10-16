@@ -2,6 +2,7 @@
 export type ScaleOption = "noscale" | "shrink" | "fit";
 export type MethodOption = "duplex" | "duplexshort" | "simplex";
 export type PaperOption = "A2" | "A3" | "A4" | "A5" | "A6" | "letter" | "legal" | "tabloid";
+export type PaperkindOption = "256";
 export type OrientationOption = "portrait" | "landscape";
 export type PrintType = "text" | "barCode" | "qrCode" | "image" | "table";
 export type PrintPosition = "left" | "center" | "right";
@@ -442,6 +443,7 @@ export type RangeOptions = {
 };
 export type PrintSettings = {
     paper?: PaperOption;
+    paperkind?: PaperkindOption;
     method?: MethodOption;
     scale?: ScaleOption;
     color_type?: ColorType;
