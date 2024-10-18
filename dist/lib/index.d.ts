@@ -5,13 +5,13 @@ import { PrintData } from './types';
  *
  * @returns A json of default printer.
  */
-export declare const default_printer: () => Promise<ResponseResult>;
+export declare const default_printer: (callback: any) => Promise<ResponseResult>;
 /**
  * Get list printers.
  *
  * @returns A array of printer detail.
  */
-export declare const printers: (id?: string | null) => Promise<ResponseResult>;
+export declare const printers: (id?: string | null, callback: any) => Promise<ResponseResult>;
 /**
  * Print.
  * @params first_param:dataprint, second_param: Print Options
