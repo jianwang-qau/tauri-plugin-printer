@@ -33,7 +33,7 @@ fn remove_temp_file(filename: String) -> bool {
 
 #[tauri::command(rename_all = "snake_case")]
 // this will be accessible with `invoke('plugin:printer|get_default_printer')`.
-fn get_default_printer() -> String {
+async fn get_default_printer() -> String {
   if cfg!(windows) {
       return windows::get_default_printer();
   }
@@ -43,7 +43,7 @@ fn get_default_printer() -> String {
 
 #[tauri::command]
 // this will be accessible with `invoke('plugin:printer|get_printers')`.
-fn get_printers() -> String {
+async fn get_printers() -> String {
   if cfg!(windows) {
       return windows::get_printers();
   }
@@ -63,7 +63,7 @@ fn get_printers_by_name(printername: String) -> String {
 
 #[tauri::command(rename_all = "snake_case")]
 // this will be accessible with `invoke('plugin:printer|print_pdf')`.
-fn print_pdf(
+async fn print_pdf(
     id: String,
     path: String, 
     printer_setting: String,

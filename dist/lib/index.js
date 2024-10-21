@@ -46,16 +46,11 @@ const decodeBase64 = (str) => {
  *
  * @returns A json of default printer.
  */
-const default_printer = (callback) => {
-    (0, tauri_1.invoke)('plugin:printer|get_default_printer').then((result) => {
-        const item = parseIfJSON(result, null);
-        if (item == null) callback({});
-        else callback(item);
-    });
-    return {
-        success: true,
-        message: "OK"
-    };
+const default_printer = () => {
+    const result = await (0, tauri_1.invoke)('plugin:printer|get_default_printer');
+    const item = parseIfJSON(result, null);
+    if (item == null) return {};
+    return item;
 }
 exports.default_printer = default_printer;
 
@@ -64,64 +59,53 @@ exports.default_printer = default_printer;
  *
  * @returns A array of printer detail.
  */
-const printers = (id = null, callback) => {
+const printers = (id = null) => {
     if (id != null) {
         const printername = decodeBase64(id);
-        (0, tauri_1.invoke)('plugin:printer|get_printers_by_name', {
+        const result = await (0, tauri_1.invoke)('plugin:printer|get_printers_by_name', {
             printername
-        }).then((result) => {
-            const item = parseIfJSON(result, null);
-            if (item == null)
-                callback([]);
-            else
-                callback([{
-                    id,
-                    name: item.Name,
-                    driver_name: item.DriverName,
-                    job_count: item.JobCount,
-                    print_processor: item.PrintProcessor,
-                    port_name: item.PortName,
-                    share_name: item.ShareName,
-                    computer_name: item.ComputerName,
-                    printer_status: item.PrinterStatus,
-                    shared: item.Shared,
-                    type: item.Type,
-                    priority: item.Priority
-                }]);
         });
-        return {
-            success: true,
-            message: "OK"
-        };
+        const item = parseIfJSON(result, null);
+        if (item == null)
+            return [];
+        return [{
+            id,
+            name: item.Name,
+            driver_name: item.DriverName,
+            job_count: item.JobCount,
+            print_processor: item.PrintProcessor,
+            port_name: item.PortName,
+            share_name: item.ShareName,
+            computer_name: item.ComputerName,
+            printer_status: item.PrinterStatus,
+            shared: item.Shared,
+            type: item.Type,
+            priority: item.Priority
+        }];
     }
 
-    (0, tauri_1.invoke)('plugin:printer|get_printers').then((result) => {
-        const listRaw = parseIfJSON(result);
-        const printers = [];
-        for (let i = 0; i < listRaw.length; i++) {
-            const item = listRaw[i];
-            const id = encodeBase64(item.Name);
-            printers.push({
-                id,
-                name: item.Name,
-                driver_name: item.DriverName,
-                job_count: item.JobCount,
-                print_processor: item.PrintProcessor,
-                port_name: item.PortName,
-                share_name: item.ShareName,
-                computer_name: item.ComputerName,
-                printer_status: item.PrinterStatus,
-                shared: item.Shared,
-                type: item.Type,
-                priority: item.Priority
-            });
-        }
-        callback(printers);
-    });
-    return {
-        success: true,
-        message: "OK"
-    };
+    const result = await (0, tauri_1.invoke)('plugin:printer|get_printers');
+    const listRaw = parseIfJSON(result);
+    const printers = [];
+    for (let i = 0; i < listRaw.length; i++) {
+        const item = listRaw[i];
+        const id = encodeBase64(item.Name);
+        printers.push({
+            id,
+            name: item.Name,
+            driver_name: item.DriverName,
+            job_count: item.JobCount,
+            print_processor: item.PrintProcessor,
+            port_name: item.PortName,
+            share_name: item.ShareName,
+            computer_name: item.ComputerName,
+            printer_status: item.PrinterStatus,
+            shared: item.Shared,
+            type: item.Type,
+            priority: item.Priority
+        });
+    }
+    return printers;
 };
 exports.printers = printers;
 /**
@@ -408,7 +392,7 @@ exports.print = print;
  * @params first_param: File Path, second_param: Print Setting
  * @returns A process status.
  */
-const print_file = (options, callback) => {
+const print_file = (options) => {
     if (typeof options.id == "undefined" && typeof options.name == "undefined")
         throw new Error('print_file require id | name as string');
     if (typeof options.path == "undefined"/*&& typeof options.file == "undefined"*/)
@@ -486,12 +470,7 @@ const print_file = (options, callback) => {
     /*if (typeof options.file != "undefined") {
         optionsParams.path = tempPath;
     }*/
-    (0, tauri_1.invoke)('plugin:printer|print_pdf', optionsParams).then(() => {
-        callback({
-            success: true,
-            message: "OK"
-        });
-    });
+    await (0, tauri_1.invoke)('plugin:printer|print_pdf', optionsParams);
     return {
         success: true,
         message: "OK"

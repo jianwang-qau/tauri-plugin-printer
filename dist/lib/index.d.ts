@@ -5,13 +5,13 @@ import { PrintData } from './types';
  *
  * @returns A json of default printer.
  */
-export declare const default_printer: (callback: any) => Promise<ResponseResult>;
+export declare const default_printer: () => Promise<{}>;
 /**
  * Get list printers.
  *
  * @returns A array of printer detail.
  */
-export declare const printers: (id?: string | null, callback: any) => Promise<ResponseResult>;
+export declare const printers: (id?: string | null) => Promise<Printer[]>;
 /**
  * Print.
  * @params first_param:dataprint, second_param: Print Options
@@ -23,7 +23,7 @@ export declare const print: (data: PrintData[], options: PrintOptions) => Promis
  * @params first_param: File Path, second_param: Print Setting
  * @returns A process status.
  */
-export declare const print_file: (options: PrintFileOptions, callback: any) => Promise<ResponseResult>;
+export declare const print_file: (options: PrintFileOptions) => Promise<ResponseResult>;
 /**
  * Get all jobs.
  * @returns A array of all printer jobs.
