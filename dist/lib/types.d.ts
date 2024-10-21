@@ -422,6 +422,11 @@ export interface SizeOptions {
     height: number;
     width: number;
 }
+export type DefaultPrinter = {
+    name: string;
+    default: boolean;
+    port_name: string;
+};
 export type Printer = {
     id: string;
     name: string;

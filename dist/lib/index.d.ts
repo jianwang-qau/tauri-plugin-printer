@@ -1,11 +1,11 @@
-import { Jobs, PrintFileOptions, PrintOptions, Printer, ResponseResult } from './types';
+import { Jobs, PrintFileOptions, PrintOptions, DefaultPrinter, Printer, ResponseResult } from './types';
 import { PrintData } from './types';
 /**
  * Get default printer.
  *
  * @returns A json of default printer.
  */
-export declare const default_printer: () => Promise<{}>;
+export declare const default_printer: () => Promise<DefaultPrinter>;
 /**
  * Get list printers.
  *
