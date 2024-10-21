@@ -46,7 +46,7 @@ const decodeBase64 = (str) => {
  *
  * @returns A json of default printer.
  */
-const default_printer = () => {
+const default_printer = async () => {
     const result = await (0, tauri_1.invoke)('plugin:printer|get_default_printer');
     const item = parseIfJSON(result, null);
     if (item == null) return {};
@@ -59,7 +59,7 @@ exports.default_printer = default_printer;
  *
  * @returns A array of printer detail.
  */
-const printers = (id = null) => {
+const printers = async (id = null) => {
     if (id != null) {
         const printername = decodeBase64(id);
         const result = await (0, tauri_1.invoke)('plugin:printer|get_printers_by_name', {
@@ -392,7 +392,7 @@ exports.print = print;
  * @params first_param: File Path, second_param: Print Setting
  * @returns A process status.
  */
-const print_file = (options) => {
+const print_file = async (options) => {
     if (typeof options.id == "undefined" && typeof options.name == "undefined")
         throw new Error('print_file require id | name as string');
     if (typeof options.path == "undefined"/*&& typeof options.file == "undefined"*/)
