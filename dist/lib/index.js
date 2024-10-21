@@ -50,7 +50,11 @@ const default_printer = async () => {
     const result = await (0, tauri_1.invoke)('plugin:printer|get_default_printer');
     const item = parseIfJSON(result, null);
     if (item == null) return {};
-    return item;
+    return {
+        name: item.Name,
+        default: item.default,
+        port_name: item.PortName
+    };
 }
 exports.default_printer = default_printer;
 
